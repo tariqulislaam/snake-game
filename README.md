@@ -23,7 +23,7 @@ You can play the live demo [here](https://tariqulislaam.github.io/snake-game/).
 - **Speed Control**: Adjust the game speed using the slider below the game board.
 
 ## Credits
-Game concept and design by Tariqul Islam.
+Game concept and design by Tariqul Islam ([Facebook](https://facebook.com/tariqulislaamrahat)).
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
