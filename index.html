@@ -1,4 +1,301 @@
-<script>
 <!-- code by Tariqul Islam -->
-document.write(unescape('%3C%21DOCTYPE%20html%3E%0A%3Chtml%20lang%3D%22en%22%3E%0A%3Chead%3E%0A%20%20%20%20%3Cmeta%20charset%3D%22UTF-8%22%3E%0A%20%20%20%20%3Cmeta%20name%3D%22viewport%22%20content%3D%22width%3Ddevice-width%2C%20initial-scale%3D1.0%22%3E%0A%20%20%20%20%3Ctitle%3ESnake%20Game%3C/title%3E%0A%20%20%20%20%3Clink%20href%3D%22https%3A//fonts.googleapis.com/css2%3Ffamily%3DShare+Tech+Mono%26display%3Dswap%22%20rel%3D%22stylesheet%22%3E%0A%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20%20%20body%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20display%3A%20flex%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20flex-direction%3A%20column%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20justify-content%3A%20center%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20align-items%3A%20center%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20height%3A%20100vh%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20margin%3A%200%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20background%3A%20linear-gradient%28135deg%2C%20%236e8efb%2C%20%23a777e3%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20font-family%3A%20%27Share%20Tech%20Mono%27%2C%20monospace%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23game-container%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20position%3A%20relative%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20width%3A%20300px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20height%3A%20300px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20background%3A%20rgba%28255%2C%20255%2C%20255%2C%200.1%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20backdrop-filter%3A%20blur%2810px%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20border-radius%3A%2020px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20overflow%3A%20hidden%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20box-shadow%3A%200%208px%2032px%20rgba%2831%2C%2038%2C%20135%2C%200.37%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20margin-bottom%3A%2020px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20transition%3A%20box-shadow%200.3s%20ease%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23game-container%3Ahover%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20box-shadow%3A%200%2012px%2040px%20rgba%2831%2C%2038%2C%20135%2C%200.5%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23game-board%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20width%3A%20100%25%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20height%3A%20100%25%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20.snake-part%2C.food%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20position%3A%20absolute%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20width%3A%2015px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20height%3A%2015px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20border-radius%3A%203px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20transition%3A%20all%200.1s%20ease%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20.snake-part%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20background-color%3A%20%230cec4f%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20box-shadow%3A%200%200%205px%20rgba%28255%2C%20255%2C%20255%2C%200.5%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20.food%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20background-color%3A%20%23d3191f%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20box-shadow%3A%200%200%205px%20rgba%28255%2C%20154%2C%20158%2C%200.5%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20animation%3A%20pulse%201s%20infinite%20alternate%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20@keyframes%20pulse%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20from%20%7B%20transform%3A%20scale%281%29%3B%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20to%20%7B%20transform%3A%20scale%281.2%29%3B%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23score%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20color%3A%20%23ffffff%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20font-size%3A%2028px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20font-weight%3A%20700%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20margin-bottom%3A%2020px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20text-shadow%3A%202px%202px%204px%20rgba%280%2C0%2C0%2C0.1%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23game-over%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20display%3A%20none%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20position%3A%20absolute%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20top%3A%200%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20left%3A%200%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20width%3A%20100%25%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20height%3A%20100%25%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20background%3A%20rgba%280%2C%200%2C%200%2C%200.7%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20color%3A%20%23ffffff%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20font-size%3A%2028px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20font-weight%3A%20700%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20text-align%3A%20center%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20padding-top%3A%20130px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20backdrop-filter%3A%20blur%285px%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20transition%3A%20opacity%200.3s%20ease%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23game-over.show%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20opacity%3A%201%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23controls%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20display%3A%20grid%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20grid-template-columns%3A%20repeat%283%2C%201fr%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20grid-gap%3A%2010px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20margin-top%3A%2020px%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23controls%20button%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20font-family%3A%20%27Share%20Tech%20Mono%27%2C%20monospace%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20font-size%3A%2024px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20padding%3A%2015px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20background%3A%20rgba%28255%2C%20255%2C%20255%2C%200.2%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20border%3A%20none%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20color%3A%20%23ffffff%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20border-radius%3A%2010px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20cursor%3A%20pointer%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20transition%3A%20all%200.3s%20ease%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20box-shadow%3A%200%202px%204px%20rgba%280%2C0%2C0%2C0.1%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20position%3A%20relative%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20overflow%3A%20hidden%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23controls%20button%3Ahover%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20background%3A%20rgba%28255%2C%20255%2C%20255%2C%200.3%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20box-shadow%3A%200%204px%208px%20rgba%280%2C0%2C0%2C0.2%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23up%20%7B%20grid-column%3A%202%3B%20%7D%0A%20%20%20%20%20%20%20%20%23left%20%7B%20grid-column%3A%201%3B%20grid-row%3A%202%3B%20%7D%0A%20%20%20%20%20%20%20%20%23right%20%7B%20grid-column%3A%203%3B%20grid-row%3A%202%3B%20%7D%0A%20%20%20%20%20%20%20%20%23down%20%7B%20grid-column%3A%202%3B%20grid-row%3A%203%3B%20%7D%0A%20%20%20%20%20%20%20%20%23speed-control%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20margin-top%3A%2020px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20width%3A%20200px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20-webkit-appearance%3A%20none%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20appearance%3A%20none%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20height%3A%2010px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20background%3A%20rgba%28255%2C%20255%2C%20255%2C%200.3%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20outline%3A%20none%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20opacity%3A%200.7%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20transition%3A%20opacity%200.2s%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20border-radius%3A%205px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20box-shadow%3A%200%202px%204px%20rgba%280%2C0%2C0%2C0.1%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23speed-control%3A%3A-webkit-slider-thumb%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20-webkit-appearance%3A%20none%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20appearance%3A%20none%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20width%3A%2020px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20height%3A%2020px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20background%3A%20%23ffffff%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20cursor%3A%20pointer%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20border-radius%3A%2050%25%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20transition%3A%20all%200.3s%20ease%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20box-shadow%3A%200%202px%204px%20rgba%280%2C0%2C0%2C0.1%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23speed-value%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20color%3A%20%23ffffff%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20text-align%3A%20center%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20margin-top%3A%2010px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20font-size%3A%2018px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20font-weight%3A%20700%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20text-shadow%3A%202px%202px%204px%20rgba%280%2C0%2C0%2C0.1%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%23credit%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20color%3A%20%23ffffff%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20font-size%3A%2014px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20margin-top%3A%2020px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20text-align%3A%20center%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20text-shadow%3A%202px%202px%204px%20rgba%280%2C0%2C0%2C0.1%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%3C/style%3E%0A%3C/head%3E%0A%3Cbody%3E%0A%20%20%20%20%3Cdiv%20id%3D%22score%22%3EScore%3A%200%3C/div%3E%0A%20%20%20%20%3Cdiv%20id%3D%22game-container%22%3E%0A%20%20%20%20%20%20%20%20%3Cdiv%20id%3D%22game-board%22%3E%3C/div%3E%0A%20%20%20%20%20%20%20%20%3Cdiv%20id%3D%22game-over%22%3EGame%20Over%21%3C/div%3E%0A%20%20%20%20%3C/div%3E%0A%20%20%20%20%3Cinput%20type%3D%22range%22%20id%3D%22speed-control%22%20min%3D%2250%22%20max%3D%22200%22%20value%3D%22100%22%20step%3D%2210%22%3E%0A%20%20%20%20%3Cdiv%20id%3D%22speed-value%22%3ESpeed%3A%20100%3C/div%3E%0A%20%20%20%20%3Cdiv%20id%3D%22controls%22%3E%0A%20%20%20%20%20%20%20%20%3Cbutton%20id%3D%22up%22%3E%u2191%3C/button%3E%0A%20%20%20%20%20%20%20%20%3Cbutton%20id%3D%22left%22%3E%u2190%3C/button%3E%0A%20%20%20%20%20%20%20%20%3Cbutton%20id%3D%22right%22%3E%u2192%3C/button%3E%0A%20%20%20%20%20%20%20%20%3Cbutton%20id%3D%22down%22%3E%u2193%3C/button%3E%0A%20%20%20%20%3C/div%3E%0A%20%20%20%20%0A%20%20%20%20%3Cdiv%20id%3D%22credit%22%3E%3Ca%20href%3D%22https%3A//www.facebook.com/tariqulislaamrahat/%22%20style%3D%22color%3A%20rgb%28255%2C%20255%2C%20255%29%3B%20text-decoration%3A%20none%3B%22%3ECreated%20by%20Tariqul%20Islam%3C/a%3E%3C/div%3E%0A%0A%20%20%20%20%3Cscript%3E%0Aconst%20_0x5d56a6%3D_0x2d11%3B%28function%28_0x314ae4%2C_0x1da38f%29%7Bconst%20_0x21a8c5%3D_0x2d11%2C_0x3420ee%3D_0x314ae4%28%29%3Bwhile%28%21%21%5B%5D%29%7Btry%7Bconst%20_0x452ea0%3DparseInt%28_0x21a8c5%280x1df%29%29/0x1*%28-parseInt%28_0x21a8c5%280x1ea%29%29/0x2%29+parseInt%28_0x21a8c5%280x1d7%29%29/0x3+parseInt%28_0x21a8c5%280x1d8%29%29/0x4*%28parseInt%28_0x21a8c5%280x1ce%29%29/0x5%29+parseInt%28_0x21a8c5%280x1e8%29%29/0x6+parseInt%28_0x21a8c5%280x1d9%29%29/0x7*%28-parseInt%28_0x21a8c5%280x1d6%29%29/0x8%29+parseInt%28_0x21a8c5%280x1d5%29%29/0x9*%28-parseInt%28_0x21a8c5%280x1db%29%29/0xa%29+-parseInt%28_0x21a8c5%280x1c7%29%29/0xb*%28-parseInt%28_0x21a8c5%280x1e4%29%29/0xc%29%3Bif%28_0x452ea0%3D%3D%3D_0x1da38f%29break%3Belse%20_0x3420ee%5B%27push%27%5D%28_0x3420ee%5B%27shift%27%5D%28%29%29%3B%7Dcatch%28_0x21b0dc%29%7B_0x3420ee%5B%27push%27%5D%28_0x3420ee%5B%27shift%27%5D%28%29%29%3B%7D%7D%7D%28_0x5d19%2C0x437b8%29%29%3Bfunction%20_0x2d11%28_0xa78d06%2C_0x26ac3c%29%7Bconst%20_0x5d19c0%3D_0x5d19%28%29%3Breturn%20_0x2d11%3Dfunction%28_0x2d1162%2C_0x10a29a%29%7B_0x2d1162%3D_0x2d1162-0x1c6%3Blet%20_0x3dbea6%3D_0x5d19c0%5B_0x2d1162%5D%3Breturn%20_0x3dbea6%3B%7D%2C_0x2d11%28_0xa78d06%2C_0x26ac3c%29%3B%7Dfunction%20_0x5d19%28%29%7Bconst%20_0x4cbfe0%3D%5B%27input%27%2C%27snake-part%27%2C%27addEventListener%27%2C%27none%27%2C%27click%27%2C%27random%27%2C%27key%27%2C%27speed-value%27%2C%2711nAHist%27%2C%27right%27%2C%27appendChild%27%2C%27food%27%2C%27style%27%2C%27className%27%2C%27div%27%2C%27164810hDUJSp%27%2C%27getElementById%27%2C%27game-board%27%2C%27ArrowUp%27%2C%27innerHTML%27%2C%27createElement%27%2C%27textContent%27%2C%2769669sxcXnV%27%2C%27461336QsSEEG%27%2C%27928983yNubFu%27%2C%2732sekacB%27%2C%2756IhxNBd%27%2C%27ArrowDown%27%2C%27310bTWeMZ%27%2C%27some%27%2C%27value%27%2C%27down%27%2C%2767343QSfODl%27%2C%27pop%27%2C%27top%27%2C%27block%27%2C%27speed-control%27%2C%272874552zYkkuG%27%2C%27display%27%2C%27floor%27%2C%27left%27%2C%271392930ctqcRF%27%2C%27ArrowLeft%27%2C%272fDRChQ%27%2C%27score%27%2C%27forEach%27%5D%3B_0x5d19%3Dfunction%28%29%7Breturn%20_0x4cbfe0%3B%7D%3Breturn%20_0x5d19%28%29%3B%7Dconst%20board%3Ddocument%5B_0x5d56a6%280x1cf%29%5D%28_0x5d56a6%280x1d0%29%29%2CscoreElement%3Ddocument%5B_0x5d56a6%280x1cf%29%5D%28_0x5d56a6%280x1eb%29%29%2CgameOverElement%3Ddocument%5B_0x5d56a6%280x1cf%29%5D%28%27game-over%27%29%2CspeedControl%3Ddocument%5B_0x5d56a6%280x1cf%29%5D%28_0x5d56a6%280x1e3%29%29%2CspeedValue%3Ddocument%5B_0x5d56a6%280x1cf%29%5D%28_0x5d56a6%280x1c6%29%29%2CboardSize%3D0x14%3Blet%20gameSpeed%3D0x64%2Csnake%3D%5B%7B%27x%27%3A0xa%2C%27y%27%3A0xa%7D%5D%2Cfood%3D%7B%7D%2Cdx%3D0x1%2Cdy%3D0x0%2Cscore%3D0x0%2CgameLoop%3Bfunction%20start%28%29%7Bconst%20_0x294a0f%3D_0x5d56a6%3Bsnake%3D%5B%7B%27x%27%3A0xa%2C%27y%27%3A0xa%7D%5D%2CcreateFood%28%29%2Cdx%3D0x1%2Cdy%3D0x0%2Cscore%3D0x0%2CupdateScore%28%29%2CgameOverElement%5B_0x294a0f%280x1cb%29%5D%5B_0x294a0f%280x1e5%29%5D%3D_0x294a0f%280x1f0%29%2CclearInterval%28gameLoop%29%2CgameLoop%3DsetInterval%28move%2CgameSpeed%29%3B%7Dfunction%20createFood%28%29%7Bconst%20_0x123e0b%3D_0x5d56a6%3Bfood%3D%7B%27x%27%3AMath%5B%27floor%27%5D%28Math%5B_0x123e0b%280x1f2%29%5D%28%29*boardSize%29%2C%27y%27%3AMath%5B_0x123e0b%280x1e6%29%5D%28Math%5B_0x123e0b%280x1f2%29%5D%28%29*boardSize%29%7D%3B%7Dfunction%20move%28%29%7Bconst%20_0x471261%3D_0x5d56a6%2C_0x53dd52%3D%7B%27x%27%3Asnake%5B0x0%5D%5B%27x%27%5D+dx%2C%27y%27%3Asnake%5B0x0%5D%5B%27y%27%5D+dy%7D%3Bif%28_0x53dd52%5B%27x%27%5D%3C0x0%7C%7C_0x53dd52%5B%27x%27%5D%3E%3DboardSize%7C%7C_0x53dd52%5B%27y%27%5D%3C0x0%7C%7C_0x53dd52%5B%27y%27%5D%3E%3DboardSize%7C%7Ccollision%28_0x53dd52%29%29%7BgameOver%28%29%3Breturn%3B%7Dsnake%5B%27unshift%27%5D%28_0x53dd52%29%2C_0x53dd52%5B%27x%27%5D%3D%3D%3Dfood%5B%27x%27%5D%26%26_0x53dd52%5B%27y%27%5D%3D%3D%3Dfood%5B%27y%27%5D%3F%28score++%2CupdateScore%28%29%2CcreateFood%28%29%29%3Asnake%5B_0x471261%280x1e0%29%5D%28%29%2Cdraw%28%29%3B%7Dfunction%20collision%28_0x434702%29%7Bconst%20_0x1fbaa6%3D_0x5d56a6%3Breturn%20snake%5B_0x1fbaa6%280x1dc%29%5D%28%28_0x4c0879%2C_0x39aadf%29%3D%3E_0x39aadf%21%3D%3D0x0%26%26_0x4c0879%5B%27x%27%5D%3D%3D%3D_0x434702%5B%27x%27%5D%26%26_0x4c0879%5B%27y%27%5D%3D%3D%3D_0x434702%5B%27y%27%5D%29%3B%7Dfunction%20draw%28%29%7Bconst%20_0x50e66d%3D_0x5d56a6%3Bboard%5B_0x50e66d%280x1d2%29%5D%3D%27%27%2Csnake%5B_0x50e66d%280x1ec%29%5D%28_0x1ee337%3D%3E%7Bconst%20_0x5837e3%3D_0x50e66d%2C_0x2c2f77%3Ddocument%5B_0x5837e3%280x1d3%29%5D%28_0x5837e3%280x1cd%29%29%3B_0x2c2f77%5B_0x5837e3%280x1cc%29%5D%3D_0x5837e3%280x1ee%29%2C_0x2c2f77%5B%27style%27%5D%5B%27left%27%5D%3D_0x1ee337%5B%27x%27%5D*0xf+%27px%27%2C_0x2c2f77%5B_0x5837e3%280x1cb%29%5D%5B_0x5837e3%280x1e1%29%5D%3D_0x1ee337%5B%27y%27%5D*0xf+%27px%27%2Cboard%5B_0x5837e3%280x1c9%29%5D%28_0x2c2f77%29%3B%7D%29%3Bconst%20_0xb1b082%3Ddocument%5B_0x50e66d%280x1d3%29%5D%28%27div%27%29%3B_0xb1b082%5B_0x50e66d%280x1cc%29%5D%3D_0x50e66d%280x1ca%29%2C_0xb1b082%5B_0x50e66d%280x1cb%29%5D%5B%27left%27%5D%3Dfood%5B%27x%27%5D*0xf+%27px%27%2C_0xb1b082%5B_0x50e66d%280x1cb%29%5D%5B_0x50e66d%280x1e1%29%5D%3Dfood%5B%27y%27%5D*0xf+%27px%27%2Cboard%5B_0x50e66d%280x1c9%29%5D%28_0xb1b082%29%3B%7Dfunction%20updateScore%28%29%7Bconst%20_0x56aa66%3D_0x5d56a6%3BscoreElement%5B_0x56aa66%280x1d4%29%5D%3D%27Score%3A%5Cx20%27+score%3B%7Dfunction%20gameOver%28%29%7Bconst%20_0x4b5026%3D_0x5d56a6%3BclearInterval%28gameLoop%29%2CgameOverElement%5B_0x4b5026%280x1cb%29%5D%5B_0x4b5026%280x1e5%29%5D%3D_0x4b5026%280x1e2%29%3B%7Dfunction%20changeDirection%28_0x13c3a9%2C_0x3eed39%29%7B%28_0x13c3a9%3D%3D%3D0x1%26%26dx%21%3D%3D-0x1%7C%7C_0x13c3a9%3D%3D%3D-0x1%26%26dx%21%3D%3D0x1%7C%7C_0x3eed39%3D%3D%3D0x1%26%26dy%21%3D%3D-0x1%7C%7C_0x3eed39%3D%3D%3D-0x1%26%26dy%21%3D%3D0x1%29%26%26%28dx%3D_0x13c3a9%2Cdy%3D_0x3eed39%29%3B%7Ddocument%5B_0x5d56a6%280x1ef%29%5D%28%27keydown%27%2C_0x34bd23%3D%3E%7Bconst%20_0x548b9c%3D_0x5d56a6%3Bswitch%28_0x34bd23%5B_0x548b9c%280x1f3%29%5D%29%7Bcase%20_0x548b9c%280x1d1%29%3AchangeDirection%280x0%2C-0x1%29%3Bbreak%3Bcase%20_0x548b9c%280x1da%29%3AchangeDirection%280x0%2C0x1%29%3Bbreak%3Bcase%20_0x548b9c%280x1e9%29%3AchangeDirection%28-0x1%2C0x0%29%3Bbreak%3Bcase%27ArrowRight%27%3AchangeDirection%280x1%2C0x0%29%3Bbreak%3Bcase%27%5Cx20%27%3Aif%28gameOverElement%5B_0x548b9c%280x1cb%29%5D%5B_0x548b9c%280x1e5%29%5D%3D%3D%3D_0x548b9c%280x1e2%29%29start%28%29%3Bbreak%3B%7D%7D%29%2Cdocument%5B_0x5d56a6%280x1cf%29%5D%28%27up%27%29%5B%27addEventListener%27%5D%28_0x5d56a6%280x1f1%29%2C%28%29%3D%3EchangeDirection%280x0%2C-0x1%29%29%2Cdocument%5B_0x5d56a6%280x1cf%29%5D%28_0x5d56a6%280x1de%29%29%5B_0x5d56a6%280x1ef%29%5D%28_0x5d56a6%280x1f1%29%2C%28%29%3D%3EchangeDirection%280x0%2C0x1%29%29%2Cdocument%5B_0x5d56a6%280x1cf%29%5D%28_0x5d56a6%280x1e7%29%29%5B_0x5d56a6%280x1ef%29%5D%28_0x5d56a6%280x1f1%29%2C%28%29%3D%3EchangeDirection%28-0x1%2C0x0%29%29%2Cdocument%5B_0x5d56a6%280x1cf%29%5D%28_0x5d56a6%280x1c8%29%29%5B_0x5d56a6%280x1ef%29%5D%28_0x5d56a6%280x1f1%29%2C%28%29%3D%3EchangeDirection%280x1%2C0x0%29%29%2CgameOverElement%5B_0x5d56a6%280x1ef%29%5D%28_0x5d56a6%280x1f1%29%2C%28%29%3D%3E%7Bconst%20_0xcf5525%3D_0x5d56a6%3Bif%28gameOverElement%5B_0xcf5525%280x1cb%29%5D%5B_0xcf5525%280x1e5%29%5D%3D%3D%3D_0xcf5525%280x1e2%29%29start%28%29%3B%7D%29%2CspeedControl%5B%27addEventListener%27%5D%28_0x5d56a6%280x1ed%29%2C%28%29%3D%3E%7Bconst%20_0x5d309f%3D_0x5d56a6%3BgameSpeed%3D0xfa-speedControl%5B_0x5d309f%280x1dd%29%5D%2CspeedValue%5B_0x5d309f%280x1d4%29%5D%3D%27Speed%3A%5Cx20%27+speedControl%5B%27value%27%5D%2CclearInterval%28gameLoop%29%2CgameLoop%3DsetInterval%28move%2CgameSpeed%29%3B%7D%29%2Cstart%28%29%3B%0A%20%20%20%20%3C/script%3E%0A%3C/body%3E%0A%3C/html%3E'));
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            font-family: 'Share Tech Mono', monospace;
+        }
+        #game-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+        #game-container:hover {
+            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
+        }
+        #game-board {
+            width: 100%;
+            height: 100%;
+        }
+        .snake-part,.food {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+            transition: all 0.1s ease;
+        }
+        .snake-part {
+            background-color: #0cec4f;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        .food {
+            background-color: #d3191f;
+            box-shadow: 0 0 5px rgba(255, 154, 158, 0.5);
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.2); }
+        }
+        #score {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        #game-over {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            padding-top: 130px;
+            backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease;
+        }
+        #game-over.show {
+            opacity: 1;
+        }
+        #controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            margin-top: 20px;
+        }
+        #controls button {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 24px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #ffffff;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        #controls button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        #up { grid-column: 2; }
+        #left { grid-column: 1; grid-row: 2; }
+        #right { grid-column: 3; grid-row: 2; }
+        #down { grid-column: 2; grid-row: 3; }
+        #speed-control {
+            margin-top: 20px;
+            width: 200px;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #speed-control::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ffffff;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #speed-value {
+            color: #ffffff;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        #credit {
+            color: #ffffff;
+            font-size: 14px;
+            margin-top: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="score">Score: 0</div>
+    <div id="game-container">
+        <div id="game-board"></div>
+        <div id="game-over">Game Over!</div>
+    </div>
+    <input type="range" id="speed-control" min="50" max="200" value="100" step="10">
+    <div id="speed-value">Speed: 100</div>
+    <div id="controls">
+        <button id="up">↑</button>
+        <button id="left">←</button>
+        <button id="right">→</button>
+        <button id="down">↓</button>
+    </div>
+    
+    <div id="credit"><a href="https://www.facebook.com/tariqulislaamrahat/" style="color: rgb(255, 255, 255); text-decoration: none;">Created by Tariqul Islam</a></div>
+
+    <script>
+        const board = document.getElementById('game-board');
+        const scoreElement = document.getElementById('score');
+        const gameOverElement = document.getElementById('game-over');
+        const speedControl = document.getElementById('speed-control');
+        const speedValue = document.getElementById('speed-value');
+        const boardSize = 20;
+        let gameSpeed = 100;
+        let snake = [{x: 10, y: 10}];
+        let food = {};
+        let dx = 1;
+        let dy = 0;
+        let score = 0;
+        let gameLoop;
+
+        function start() {
+            snake = [{x: 10, y: 10}];
+            createFood();
+            dx = 1;
+            dy = 0;
+            score = 0;
+            updateScore();
+            gameOverElement.style.display = 'none';
+            clearInterval(gameLoop);
+            gameLoop = setInterval(move, gameSpeed);
+        }
+
+        function createFood() {
+            food = {
+                x: Math.floor(Math.random() * boardSize),
+                y: Math.floor(Math.random() * boardSize)
+            };
+        }
+
+        function move() {
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+
+            if (head.x < 0 || head.x >= boardSize || head.y < 0 || head.y >= boardSize || collision(head)) {
+                gameOver();
+                return;
+            }
+
+            snake.unshift(head);
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                updateScore();
+                createFood();
+            } else {
+                snake.pop();
+            }
+            draw();
+        }
+
+        function collision(head) {
+            return snake.some((part, index) => index !== 0 && part.x === head.x && part.y === head.y);
+        }
+
+        function draw() {
+            board.innerHTML = '';
+            snake.forEach(part => {
+                const snakePart = document.createElement('div');
+                snakePart.className = 'snake-part';
+                snakePart.style.left = `${part.x * 15}px`;
+                snakePart.style.top = `${part.y * 15}px`;
+                board.appendChild(snakePart);
+            });
+
+            const foodElement = document.createElement('div');
+            foodElement.className = 'food';
+            foodElement.style.left = `${food.x * 15}px`;
+            foodElement.style.top = `${food.y * 15}px`;
+            board.appendChild(foodElement);
+        }
+
+        function updateScore() {
+            scoreElement.textContent = `Score: ${score}`;
+        }
+
+        function gameOver() {
+            clearInterval(gameLoop);
+            gameOverElement.style.display = 'block';
+        }
+
+        function changeDirection(newDx, newDy) {
+            if ((newDx === 1 && dx !== -1) || (newDx === -1 && dx !== 1) ||
+                (newDy === 1 && dy !== -1) || (newDy === -1 && dy !== 1)) {
+                dx = newDx;
+                dy = newDy;
+            }
+        }
+
+        document.addEventListener('keydown', e => {
+            switch(e.key) {
+                case 'ArrowUp':
+                    changeDirection(0, -1);
+                    break;
+                case 'ArrowDown':
+                    changeDirection(0, 1);
+                    break;
+                case 'ArrowLeft':
+                    changeDirection(-1, 0);
+                    break;
+                case 'ArrowRight':
+                    changeDirection(1, 0);
+                    break;
+                case ' ':
+                    if (gameOverElement.style.display === 'block') start();
+                    break;
+            }
+        });
+
+        document.getElementById('up').addEventListener('click', () => changeDirection(0, -1));
+        document.getElementById('down').addEventListener('click', () => changeDirection(0, 1));
+        document.getElementById('left').addEventListener('click', () => changeDirection(-1, 0));
+        document.getElementById('right').addEventListener('click', () => changeDirection(1, 0));
+
+        gameOverElement.addEventListener('click', () => {
+            if (gameOverElement.style.display === 'block') start();
+        });
+
+        speedControl.addEventListener('input', () => {
+            gameSpeed = 250 - speedControl.value;
+            speedValue.textContent = `Speed: ${speedControl.value}`;
+            clearInterval(gameLoop);
+            gameLoop = setInterval(move, gameSpeed);
+        });
+
+        start();
+    </script>
+</body>
+</html>
